@@ -9,29 +9,25 @@ impl crate::lib::DayInner<Day1> for Day1 {
         let lines: Vec<&str> = input.split('\n').collect();
         let int_lines: Vec<i32> = lines.iter().map(|x| x.parse::<i32>().unwrap()).collect();
 
-        let mut last_depth: Option<i32> = None;
-        let mut last_depth2: Option<i32> = None;
-        let mut last_depth3: Option<i32> = None;
+        let mut last_depths: [Option<i32>; 3] = [None, None, None];
 
         let mut counter1 = 0;
         let mut counter2 = 0;
 
         for int_line in int_lines {
-            if let Some(d) = last_depth {
+            if let Some(d) = last_depths[0] {
                 if d < int_line {
                     counter1 += 1;
                 }
             }
 
-            if let Some(d) = last_depth3 {
+            if let Some(d) = last_depths[2] {
                 if d < int_line {
                     counter2 += 1;
                 }
             }
 
-            last_depth3 = last_depth2;
-            last_depth2 = last_depth;
-            last_depth = Some(int_line);
+            last_depths = [Some(int_line), last_depths[0], last_depths[1]]
         }
 
         println!("Counter1 is {}", counter1);
