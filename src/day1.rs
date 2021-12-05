@@ -6,7 +6,7 @@ impl crate::lib::DayInner<Day1> for Day1 {
     }
 
     fn inner(&self, input: String) -> (i32, i32) {
-        let lines: Vec<&str> = input.split('\n').collect();
+        let lines: Vec<&str> = input.lines().collect();
         let int_lines: Vec<i32> = lines.iter().map(|x| x.parse::<i32>().unwrap()).collect();
 
         let mut last_depths: [Option<i32>; 3] = [None, None, None];

@@ -1,4 +1,5 @@
 use std::fs;
+use std::path::PathBuf;
 
 const TEST_SUFFIX: &str = "test";
 const INPUT_SUFFIX: &str = "input";
@@ -39,11 +40,15 @@ fn get_file_type(test: bool) -> &'static str {
     }
 }
 
-fn get_file_name(day: i32, test: bool) -> String {
-    format!("inputs/day{}.{}", day, get_file_type(test))
+fn get_file_name(day: i32, test: bool) -> PathBuf {
+    let mut path = PathBuf::new();
+    path.push("inputs");
+    path.push(format!("day{}", day));
+    path.set_extension(get_file_type(test));
+    path
 }
 
-fn get_file_content(filename: String) -> String {
+fn get_file_content(filename: PathBuf) -> String {
     fs::read_to_string(filename).expect("Something went wrong reading the file")
 }
 

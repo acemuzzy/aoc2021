@@ -6,7 +6,7 @@ impl crate::lib::DayInner<Day2> for Day2 {
     }
 
     fn inner(&self, input: String) -> (i32, i32) {
-        let lines: Vec<&str> = input.split('\n').collect();
+        let lines: Vec<&str> = input.lines().collect();
         let mut pos1: (i32, i32) = (0, 0);
         let mut pos2: (i32, i32) = (0, 0);
         let mut aim: i32 = 0;

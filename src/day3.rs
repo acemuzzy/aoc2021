@@ -6,7 +6,7 @@ impl crate::lib::DayInner<Day3> for Day3 {
     }
 
     fn inner(&self, input: String) -> (i32, i32) {
-        let lines: Vec<&str> = input.split('\n').collect();
+        let lines: Vec<&str> = input.lines().collect();
 
         let width = lines[0].len();
         let number = lines.len();
