@@ -1,11 +1,11 @@
 pub struct Day1;
 
-impl crate::lib::DayInner<Day1> for Day1 {
+impl crate::lib::DayInner<Day1, i32> for Day1 {
     fn day(&self) -> i32 {
         1
     }
 
-    fn inner(&self, input: String) -> (i64, i64) {
+    fn inner(&self, input: String) -> (i32, i32) {
         let lines: Vec<&str> = input.lines().collect();
         let int_lines: Vec<i32> = lines.iter().map(|x| x.parse::<i32>().unwrap()).collect();
 
@@ -30,9 +30,6 @@ impl crate::lib::DayInner<Day1> for Day1 {
             last_depths = [Some(int_line), last_depths[0], last_depths[1]]
         }
 
-        println!("Counter1 is {}", counter1);
-        println!("Counter2 is {}", counter2);
-
-        (counter1.into(), counter2.into())
+        (counter1, counter2)
     }
 }

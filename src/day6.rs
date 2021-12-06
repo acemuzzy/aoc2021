@@ -10,7 +10,7 @@ fn next_generation(pots: Vec<i64>) -> Vec<i64> {
     new_pots
 }
 
-impl crate::lib::DayInner<Day6> for Day6 {
+impl crate::lib::DayInner<Day6, i64> for Day6 {
     fn day(&self) -> i32 {
         6
     }
@@ -26,21 +26,18 @@ impl crate::lib::DayInner<Day6> for Day6 {
         for seed in seeds {
             pots[seed as usize] += 1;
         }
-        println!("Pots {:?}", pots);
 
         for _ in 0..80 {
             pots = next_generation(pots);
         }
 
         let size1 = pots.iter().sum::<i64>();
-        println!("Length1 {}", size1);
 
         for _ in 0..176 {
             pots = next_generation(pots);
         }
 
         let size2 = pots.iter().sum::<i64>();
-        println!("Length2 {}", size2);
 
         (size1, size2)
     }

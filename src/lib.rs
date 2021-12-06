@@ -4,31 +4,36 @@ use std::path::PathBuf;
 const TEST_SUFFIX: &str = "test";
 const INPUT_SUFFIX: &str = "input";
 
-pub trait DayInner<T> {
-    fn inner(&self, input: String) -> (i64, i64);
+pub trait DayInner<T, O> {
+    fn inner(&self, input: String) -> (O, O);
     fn day(&self) -> i32;
 }
 
-pub trait Day<T>
+pub trait Day<T, O>
 where
-    T: DayInner<T>,
+    T: DayInner<T, O>,
+    O: Into<i64>,
 {
     fn run(&self);
-    fn test(&self) -> (i64, i64);
+    fn test(&self) -> (O, O);
 }
 
-impl<T> Day<T> for T
+impl<T, O> Day<T, O> for T
 where
-    T: DayInner<T>,
+    T: DayInner<T, O>,
+    O: Into<i64> + std::fmt::Debug,
 {
     fn run(&self) {
         let input = get_input_content(self.day(), false);
-        self.inner(input);
+        let result = self.inner(input);
+        println!("Day {}: {:?}", self.day(), result);
     }
 
-    fn test(&self) -> (i64, i64) {
+    fn test(&self) -> (O, O) {
         let input = get_input_content(self.day(), true);
-        self.inner(input)
+        let result = self.inner(input);
+        println!("Day {} test: {:?}", self.day(), result);
+        result
     }
 }
 

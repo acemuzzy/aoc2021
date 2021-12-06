@@ -1,11 +1,11 @@
 pub struct Day3;
 
-impl crate::lib::DayInner<Day3> for Day3 {
+impl crate::lib::DayInner<Day3, i32> for Day3 {
     fn day(&self) -> i32 {
         3
     }
 
-    fn inner(&self, input: String) -> (i64, i64) {
+    fn inner(&self, input: String) -> (i32, i32) {
         let lines: Vec<&str> = input.lines().collect();
 
         let width = lines[0].len();
@@ -116,6 +116,6 @@ impl crate::lib::DayInner<Day3> for Day3 {
         let lsr = ox * carb;
         println!("Life support rating: {}", lsr);
 
-        (power.into(), lsr.into())
+        (power, lsr)
     }
 }

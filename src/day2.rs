@@ -1,11 +1,11 @@
 pub struct Day2;
 
-impl crate::lib::DayInner<Day2> for Day2 {
+impl crate::lib::DayInner<Day2, i32> for Day2 {
     fn day(&self) -> i32 {
         2
     }
 
-    fn inner(&self, input: String) -> (i64, i64) {
+    fn inner(&self, input: String) -> (i32, i32) {
         let lines: Vec<&str> = input.lines().collect();
         let mut pos1: (i32, i32) = (0, 0);
         let mut pos2: (i32, i32) = (0, 0);
@@ -31,6 +31,6 @@ impl crate::lib::DayInner<Day2> for Day2 {
         println!("Pos1 is {:?}, product {}", pos1, pos1.0 * pos1.1);
         println!("Pos2 is {:?}, product {}", pos2, pos2.0 * pos2.1);
 
-        ((pos1.0 * pos1.1).into(), (pos2.0 * pos2.1).into())
+        (pos1.0 * pos1.1, pos2.0 * pos2.1)
     }
 }
