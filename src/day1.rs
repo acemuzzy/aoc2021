@@ -5,7 +5,7 @@ impl crate::lib::DayInner<Day1> for Day1 {
         1
     }
 
-    fn inner(&self, input: String) -> (i32, i32) {
+    fn inner(&self, input: String) -> (i64, i64) {
         let lines: Vec<&str> = input.lines().collect();
         let int_lines: Vec<i32> = lines.iter().map(|x| x.parse::<i32>().unwrap()).collect();
 
@@ -33,6 +33,6 @@ impl crate::lib::DayInner<Day1> for Day1 {
         println!("Counter1 is {}", counter1);
         println!("Counter2 is {}", counter2);
 
-        (counter1, counter2)
+        (counter1.into(), counter2.into())
     }
 }

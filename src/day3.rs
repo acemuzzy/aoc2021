@@ -5,7 +5,7 @@ impl crate::lib::DayInner<Day3> for Day3 {
         3
     }
 
-    fn inner(&self, input: String) -> (i32, i32) {
+    fn inner(&self, input: String) -> (i64, i64) {
         let lines: Vec<&str> = input.lines().collect();
 
         let width = lines[0].len();
@@ -116,6 +116,6 @@ impl crate::lib::DayInner<Day3> for Day3 {
         let lsr = ox * carb;
         println!("Life support rating: {}", lsr);
 
-        (power, lsr)
+        (power.into(), lsr.into())
     }
 }

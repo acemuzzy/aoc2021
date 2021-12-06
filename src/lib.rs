@@ -5,7 +5,7 @@ const TEST_SUFFIX: &str = "test";
 const INPUT_SUFFIX: &str = "input";
 
 pub trait DayInner<T> {
-    fn inner(&self, input: String) -> (i32, i32);
+    fn inner(&self, input: String) -> (i64, i64);
     fn day(&self) -> i32;
 }
 
@@ -14,7 +14,7 @@ where
     T: DayInner<T>,
 {
     fn run(&self);
-    fn test(&self) -> (i32, i32);
+    fn test(&self) -> (i64, i64);
 }
 
 impl<T> Day<T> for T
@@ -26,7 +26,7 @@ where
         self.inner(input);
     }
 
-    fn test(&self) -> (i32, i32) {
+    fn test(&self) -> (i64, i64) {
         let input = get_input_content(self.day(), true);
         self.inner(input)
     }

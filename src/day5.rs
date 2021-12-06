@@ -43,7 +43,7 @@ impl crate::lib::DayInner<Day5> for Day5 {
         5
     }
 
-    fn inner(&self, input: String) -> (i32, i32) {
+    fn inner(&self, input: String) -> (i64, i64) {
         let lines: Vec<Line> = input.lines().map(Line::from_input_line).collect();
         let vertical_or_horizontal_lines: Vec<&Line> = lines
             .iter()
@@ -112,6 +112,6 @@ impl crate::lib::DayInner<Day5> for Day5 {
             .sum::<i32>() as i32;
         println!("Overlaps2: {}", overlaps2);
 
-        (overlaps1, overlaps2)
+        (overlaps1.into(), overlaps2.into())
     }
 }

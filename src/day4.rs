@@ -62,7 +62,7 @@ impl crate::lib::DayInner<Day4> for Day4 {
         4
     }
 
-    fn inner(&self, input: String) -> (i32, i32) {
+    fn inner(&self, input: String) -> (i64, i64) {
         let lines: Vec<&str> = input.lines().collect();
         let numbers: Vec<i32> = lines[0].split(',').map(|d| d.parse().unwrap()).collect();
         let mut boards: Vec<BingoBoard> = vec![];
@@ -103,6 +103,6 @@ impl crate::lib::DayInner<Day4> for Day4 {
             boards = boards.into_iter().filter(|x| !x.is_finished()).collect();
         }
 
-        (rc1.unwrap(), rc2.unwrap())
+        (rc1.unwrap().into(), rc2.unwrap().into())
     }
 }
