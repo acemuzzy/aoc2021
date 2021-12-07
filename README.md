@@ -1,4 +1,5 @@
 # Advent of Code 2021
+![Rust](https://github.com/acemuzzy/aoc2021/actions/workflows/rust.yml/badge.svg)
 
 Courtesy of https://adventofcode.com/.
 
