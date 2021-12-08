@@ -5,6 +5,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 mod lib;
 
 use crate::lib::Day;
@@ -14,14 +15,15 @@ fn main() {
     // day2::Day2 {}.run();
     // day3::Day3 {}.run();
     // day4::Day4 {}.run();
-    //day5::Day5 {}.run();
-    //day6::Day6 {}.run();
-    day7::Day7 {}.run();
+    // day5::Day5 {}.run();
+    // day6::Day6 {}.run();
+    // day7::Day7 {}.run();
+    day8::Day8 {}.run();
 }
 
 #[cfg(test)]
 mod test {
-    use super::{day1, day2, day3, day4, day5, day6, day7, lib::Day};
+    use super::{day1, day2, day3, day4, day5, day6, day7, day8, lib::Day};
 
     #[test]
     fn day1() {
@@ -56,5 +58,10 @@ mod test {
     #[test]
     fn day7() {
         assert_eq!(day7::Day7 {}.test(), (37, 168));
+    }
+
+    #[test]
+    fn day8() {
+        assert_eq!(day8::Day8 {}.test(), (26, 0));
     }
 }
