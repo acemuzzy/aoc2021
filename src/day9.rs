@@ -95,6 +95,21 @@ impl crate::lib::DayInner<Day9, i32> for Day9 {
             }
         }
 
+        // for row in grid.basins {
+        //     let output: String = row.iter().map(|x| match x {
+        //         Some(d) => {
+        //             match (d % 4) {
+        //               0 => ".",
+        //               1 => "\\",
+        //               2 => "%",
+        //               _ => "/",  
+        //             }.to_string()
+        //         },
+        //         _ => "X".to_string(),
+        //     }).collect::<String>();
+        //     println!("{}", output);
+        // }
+
         basin_sizes.sort_by(|a, b| b.cmp(a));
         let basin = basin_sizes[0] * basin_sizes[1] * basin_sizes[2];
 
