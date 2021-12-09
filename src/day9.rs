@@ -102,7 +102,7 @@ impl crate::lib::DayInner<Day9, i32> for Day9 {
         //               0 => ".",
         //               1 => "\\",
         //               2 => "%",
-        //               _ => "/",  
+        //               _ => "/",
         //             }.to_string()
         //         },
         //         _ => "X".to_string(),
