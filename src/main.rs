@@ -107,6 +107,6 @@ mod test {
 
     #[test]
     fn day14() {
-        assert_eq!(day14::Day14 {}.test(), (1588, 0));
+        assert_eq!(day14::Day14 {}.test(), (1588, 2188189693529));
     }
 }
