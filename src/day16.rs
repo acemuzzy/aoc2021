@@ -23,7 +23,7 @@ enum PacketData {
     SubPackets(Vec<Packet>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 enum ID {
     Literal,
     Operator(u8),
@@ -148,80 +148,45 @@ impl Packet {
     }
 
     fn value(&self) -> u64 {
-        match self.id {
-            ID::Literal => match &self.packet_data {
-                PacketData::Literal(v) => *v,
-                PacketData::SubPackets(_) => unreachable!(),
-            },
+        match (self.id, &self.packet_data) {
+            (ID::Literal, PacketData::Literal(v)) => *v,
             // SUM
-            ID::Operator(0) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    v.iter().map(Packet::value).sum()
-                } else {
-                    unreachable!()
-                }
-            }
+            (ID::Operator(0), PacketData::SubPackets(v)) => v.iter().map(Packet::value).sum(),
             // PRODUCT
-            ID::Operator(1) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    v.iter().map(Packet::value).product()
-                } else {
-                    unreachable!()
-                }
-            }
+            (ID::Operator(1), PacketData::SubPackets(v)) => v.iter().map(Packet::value).product(),
             // MINIMUM
-            ID::Operator(2) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    v.iter().map(Packet::value).min().unwrap()
-                } else {
-                    unreachable!()
-                }
+            (ID::Operator(2), PacketData::SubPackets(v)) => {
+                v.iter().map(Packet::value).min().unwrap()
             }
             // MAXIMUM
-            ID::Operator(3) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    v.iter().map(Packet::value).max().unwrap()
-                } else {
-                    unreachable!()
-                }
+            (ID::Operator(3), PacketData::SubPackets(v)) => {
+                v.iter().map(Packet::value).max().unwrap()
             }
             // GREATER THAN
-            ID::Operator(5) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    assert_eq!(v.len(), 2);
-                    if v[0].value() > v[1].value() {
-                        1
-                    } else {
-                        0
-                    }
+            (ID::Operator(5), PacketData::SubPackets(v)) => {
+                assert_eq!(v.len(), 2);
+                if v[0].value() > v[1].value() {
+                    1
                 } else {
-                    unreachable!()
+                    0
                 }
             }
             // LESS THAN
-            ID::Operator(6) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    assert_eq!(v.len(), 2);
-                    if v[0].value() < v[1].value() {
-                        1
-                    } else {
-                        0
-                    }
+            (ID::Operator(6), PacketData::SubPackets(v)) => {
+                assert_eq!(v.len(), 2);
+                if v[0].value() < v[1].value() {
+                    1
                 } else {
-                    unreachable!()
+                    0
                 }
             }
             // EQUALS
-            ID::Operator(7) => {
-                if let PacketData::SubPackets(v) = &self.packet_data {
-                    assert_eq!(v.len(), 2);
-                    if v[0].value() == v[1].value() {
-                        1
-                    } else {
-                        0
-                    }
+            (ID::Operator(7), PacketData::SubPackets(v)) => {
+                assert_eq!(v.len(), 2);
+                if v[0].value() == v[1].value() {
+                    1
                 } else {
-                    unreachable!()
+                    0
                 }
             }
             _ => unreachable!(),
