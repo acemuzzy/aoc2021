@@ -53,20 +53,10 @@ impl Tlv {
         // Read first three bits (V)
         let v_bits = self.read_bits(3);
         let version = Self::val_from_bits(v_bits).try_into().unwrap();
-        println!("V={:?}", version);
 
         // Read next three bits (T)
-        let t_bits = &self.data[self.cursor..self.cursor + 3];
-        let mut id = 0;
-        println!("T={:?}", t_bits);
-        let mut val = 4;
-        for t in t_bits.iter().take(3) {
-            if *t == 1 {
-                id += val;
-            }
-            val /= 2;
-            self.cursor += 1;
-        }
+        let t_bits = self.read_bits(3);
+        let id = Self::val_from_bits(t_bits).try_into().unwrap();
         let id = match id {
             4 => ID::Literal,
             _ => ID::Operator(id),
@@ -74,10 +64,7 @@ impl Tlv {
 
         // Read the next lot...
         let packet_data = match id {
-            ID::Literal => {
-                println!("Literal");
-                PacketData::Literal(self.parse_literal())
-            }
+            ID::Literal => PacketData::Literal(self.parse_literal()),
             _ => {
                 let i_bit = self.read();
                 let mut inner_packets: Vec<Packet> = vec![];
@@ -137,12 +124,7 @@ impl Tlv {
             }
         }
 
-        println!("Literal bits {:?}", literal_bits);
-
-        let val = Self::val_from_bits(literal_bits);
-
-        println!("Literal value {}", val);
-        val
+        Self::val_from_bits(literal_bits)
     }
 
     fn val_from_bits(literal_bits: Vec<u8>) -> u64 {
@@ -163,6 +145,87 @@ impl Packet {
                 PacketData::Literal(_) => 0u64,
                 PacketData::SubPackets(v) => v.iter().map(Packet::sum_versions).sum(),
             }
+    }
+
+    fn value(&self) -> u64 {
+        match self.id {
+            ID::Literal => match &self.packet_data {
+                PacketData::Literal(v) => *v,
+                PacketData::SubPackets(_) => unreachable!(),
+            },
+            // SUM
+            ID::Operator(0) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    v.iter().map(Packet::value).sum()
+                } else {
+                    unreachable!()
+                }
+            }
+            // PRODUCT
+            ID::Operator(1) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    v.iter().map(Packet::value).product()
+                } else {
+                    unreachable!()
+                }
+            }
+            // MINIMUM
+            ID::Operator(2) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    v.iter().map(Packet::value).min().unwrap()
+                } else {
+                    unreachable!()
+                }
+            }
+            // MAXIMUM
+            ID::Operator(3) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    v.iter().map(Packet::value).max().unwrap()
+                } else {
+                    unreachable!()
+                }
+            }
+            // GREATER THAN
+            ID::Operator(5) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    assert_eq!(v.len(), 2);
+                    if v[0].value() > v[1].value() {
+                        1
+                    } else {
+                        0
+                    }
+                } else {
+                    unreachable!()
+                }
+            }
+            // LESS THAN
+            ID::Operator(6) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    assert_eq!(v.len(), 2);
+                    if v[0].value() < v[1].value() {
+                        1
+                    } else {
+                        0
+                    }
+                } else {
+                    unreachable!()
+                }
+            }
+            // EQUALS
+            ID::Operator(7) => {
+                if let PacketData::SubPackets(v) = &self.packet_data {
+                    assert_eq!(v.len(), 2);
+                    if v[0].value() == v[1].value() {
+                        1
+                    } else {
+                        0
+                    }
+                } else {
+                    unreachable!()
+                }
+            }
+            _ => unreachable!(),
+        }
     }
 }
 
@@ -196,12 +259,12 @@ impl crate::lib::DayInner<Day16, i64> for Day16 {
             cursor: 0,
         };
 
-        println!("{}", tlv);
+        // println!("{}", tlv);
 
         let packet = tlv.parse();
 
-        println!("{:?}", packet);
+        // println!("{:?}", packet);
 
-        (packet.sum_versions() as i64, 0)
+        (packet.sum_versions() as i64, packet.value() as i64)
     }
 }
