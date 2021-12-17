@@ -130,6 +130,8 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
                     },
                 };
 
+                let result = attempt.hits(&target);
+
                 if attempt.location.x < target.top_left.x && attempt.velocity.x == 0 {
                     // Fell short - no point trying lower angles
                     break;
@@ -140,8 +142,7 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
                     // Under entirely - no point trying lowing angles
                     break;
                 }
-
-                let result = attempt.hits(&target);
+                                
                 if result.is_some() {
                     println!("{},{}", x_speed, y_speed);
                 }
