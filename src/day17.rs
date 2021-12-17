@@ -90,7 +90,7 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
         let mut max_heights: Vec<Option<i32>> = vec![];
 
         for x_speed in 1..=target.bottom_right.x {
-            for y_speed in 0..10000 {
+            for y_speed in 0..(-target.bottom_right.y + 1) {
                 let mut attempt = Probe {
                     location: Vector { x: 0, y: 0 },
                     velocity: Vector {
