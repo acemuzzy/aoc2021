@@ -90,7 +90,7 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
         let mut max_heights: Vec<Option<i32>> = vec![];
 
         for x_speed in 1..=target.bottom_right.x {
-            for y_speed in -10000..10000 {
+            for y_speed in 0..10000 {
                 let mut attempt = Probe {
                     location: Vector { x: 0, y: 0 },
                     velocity: Vector {
@@ -99,6 +99,8 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
                     },
                 };
 
+                let result = attempt.hits(&target);
+
                 if attempt.location.x > target.bottom_right.x
                     && attempt.location.y > target.top_left.y
                 {
@@ -106,8 +108,36 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
                     break;
                 }
 
-                if attempt.location.x < target.top_left.x && attempt.velocity.x == 0 {
+                if (attempt.location.x < target.top_left.x) && attempt.velocity.x == 0 {
                     // Fell short - no point trying higher angles
+                    break;
+                }
+
+                if result.is_some() {
+                    println!("{},{}", x_speed, y_speed);
+                }
+
+                max_heights.push(result);
+            }
+
+            for y_speed in 1..10000 {
+                let y_speed = -y_speed;
+                let mut attempt = Probe {
+                    location: Vector { x: 0, y: 0 },
+                    velocity: Vector {
+                        x: x_speed,
+                        y: y_speed,
+                    },
+                };
+
+                if attempt.location.x < target.top_left.x && attempt.velocity.x == 0 {
+                    // Fell short - no point trying lower angles
+                    break;
+                }
+
+                if attempt.location.x < target.top_left.x && attempt.location.y < target.top_left.y
+                {
+                    // Under entirely - no point trying lowing angles
                     break;
                 }
 
