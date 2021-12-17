@@ -142,7 +142,7 @@ impl crate::lib::DayInner<Day17, i32> for Day17 {
                     // Under entirely - no point trying lowing angles
                     break;
                 }
-                                
+
                 if result.is_some() {
                     println!("{},{}", x_speed, y_speed);
                 }
